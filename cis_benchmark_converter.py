@@ -109,7 +109,7 @@ def write_output(recommendations, output_file, output_format, title, version):
     log_info(f"Writing output to {output_file} in {output_format.upper()} format...")
 
     if output_format == 'csv':
-        headers = ['Compliance Status', 'Number', 'Level', 'Title'] + [sec[:-1] for sec in sections if sec != 'CIS Controls:']
+        headers = ['Compliance Status', 'Number', 'Level', 'Title', 'v8'] + [sec[:-1] for sec in sections]
         with open(output_file, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file, delimiter='|')
             writer.writerow([title if title else "CIS Benchmark Document"])
@@ -131,7 +131,7 @@ def write_output(recommendations, output_file, output_format, title, version):
         sheet["A2"] = version if version else ""
         sheet["A2"].font = Font(size=12, italic=True)
 
-        headers = ['Compliance Status', 'Number', 'Level', 'Title'] + [sec[:-1] for sec in sections if sec != 'CIS Controls:']
+        headers = ['Compliance Status', 'Number', 'Level', 'Title', 'v8'] + [sec[:-1] for sec in sections]
         sheet.append([""] * len(headers))  # Empty row for spacing
         sheet.append(headers)
 
@@ -307,7 +307,7 @@ def extract_section(lines, start_index, section_name):
         line = remove_page_numbers(line)  # Clean each line of page numbers
 
         # Stop at new section, title, or "CIS Controls"
-        if any(line.startswith(sec) for sec in sections) or title_pattern.match(line) or 'CIS Controls' in line:
+        if any(line.startswith(sec) for sec in sections) or title_pattern.match(line) in line:
             break
 
         content.append(line)
