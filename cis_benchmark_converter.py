@@ -78,6 +78,7 @@ sections = [
     'Default Value:',
     'References:',
     'Additional Information:'
+    'v8'
 ]
 
 def extract_title_and_version(input_file):
